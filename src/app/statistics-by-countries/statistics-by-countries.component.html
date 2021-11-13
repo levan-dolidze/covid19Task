@@ -1,1 +1,48 @@
 <p>statistics-by-countries works!</p>
+<form [formGroup]="countryForm">
+
+    <mat-form-field appearance="fill">
+        <mat-label>select country </mat-label>
+        <mat-select (selectionChange)="selectedCountryName($event)" formControlName="countryName">
+            <mat-option *ngFor='let countries of countryNameList' [value]="countries">
+                {{countries}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <div [hidden]="isSelected" class="tableDiv">
+        <table>
+            <thead>
+                <th>population</th>
+                <th>updated at </th>
+                <th>today confirmed</th>
+                <th>today death</th>
+                <th>death rate </th>
+                <th>recovery rate </th>
+                <th>cases per million population</th>
+                <th> recovered</th>
+                <th> confirmed</th>
+                <th> deaths</th>
+                <th>today recovered</th>
+
+
+
+            </thead>
+            <tbody *ngFor='let data of statisticsByCountries'>
+                <th>{{data.population}}</th>
+                <th>{{data.updated_at}}</th>
+                <th>{{data.today.deaths}}</th>
+                <th>{{data.today.confirmed}}</th>
+                <th>{{data.latest_data.calculated.death_rate}}</th>
+                <th>{{data.latest_data.calculated.recovery_rate}}</th>
+                <th>{{data.latest_data.calculated.cases_per_million_population}}</th>
+                <th>{{data.latest_data.recovered}}</th>
+                <th>{{data.latest_data.confirmed}}</th>
+                <th>{{data.latest_data.deaths}}</th>
+            </tbody>
+
+        </table>
+    </div>
+
+
+</form>

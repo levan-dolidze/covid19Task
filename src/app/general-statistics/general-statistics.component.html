@@ -1,5 +1,38 @@
 <p>general-statistics works!</p>
-<div >
+<form [formGroup]="dataForm"  >
 
 
+
+ <mat-form-field appearance="fill">
+        <mat-label>select date</mat-label>
+        <mat-select (selectionChange)="chouse($event)"  formControlName="date" >
+          <mat-option  *ngFor='let data of parsedDates' [value]="data">
+            {{data}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div class="tableDiv">
+    <table>
+        <thead>
+            <th>date</th>
+            <th>confirmed</th>
+            <th>new confirmed</th>
+            <th>deaths</th>
+            <th>new deaths</th>
+            <th>recovered</th>
+            <th>new recovered</th>
+
+        </thead>
+        <tbody  *ngFor='let data of parsedData'>
+            <th>{{data.date}}</th>
+            <th>{{data.confirmed}}</th>
+            <th>{{data.new_confirmed}}</th>
+            <th>{{data.deaths}}</th>
+            <th>{{data.new_deaths}}</th>
+            <th>{{data.recovered}} </th>
+            <th>{{data.new_recovered}}</th>
+        </tbody>
+
+    </table>
 </div>
+</form>
