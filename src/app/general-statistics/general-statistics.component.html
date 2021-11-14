@@ -5,9 +5,9 @@
 
  <mat-form-field appearance="fill">
         <mat-label>select date</mat-label>
-        <mat-select (selectionChange)="chouse($event)"  formControlName="date" >
-          <mat-option  *ngFor='let data of parsedDates' [value]="data">
-            {{data}}
+        <mat-select (selectionChange)="selectedDate($event)"  formControlName="date" >
+          <mat-option  *ngFor='let dates of dateList' [value]="dates">
+            {{dates}}
           </mat-option>
         </mat-select>
       </mat-form-field>
@@ -36,3 +36,8 @@
     </table>
 </div>
 </form>
+<mat-slide-toggle (change)="changeChartMode($event)">dark mode</mat-slide-toggle>
+<div echarts [options]="_chartOptions" [theme]="_theme" >
+
+
+</div>

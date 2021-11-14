@@ -10,7 +10,7 @@
         </mat-select>
     </mat-form-field>
 
-    <div [hidden]="isSelected" class="tableDiv">
+    <div  [hidden]="isSelected" class="tableDiv">
         <table>
             <thead>
                 <th>population</th>
@@ -28,17 +28,19 @@
 
 
             </thead>
-            <tbody *ngFor='let data of statisticsByCountries'>
+            <tbody  *ngFor='let data of statisticsByCountries'>
+
                 <th>{{data.population}}</th>
                 <th>{{data.updated_at}}</th>
                 <th>{{data.today.deaths}}</th>
                 <th>{{data.today.confirmed}}</th>
-                <th>{{data.latest_data.calculated.death_rate}}</th>
-                <th>{{data.latest_data.calculated.recovery_rate}}</th>
-                <th>{{data.latest_data.calculated.cases_per_million_population}}</th>
+                <th>{{data.latest_data.calculated.death_rate|roundNumber}}</th>
+                <th>{{data.latest_data.calculated.recovery_rate|roundNumber}}</th>
+                <th>{{data.latest_data.calculated.cases_per_million_population|roundNumber}}</th>
                 <th>{{data.latest_data.recovered}}</th>
                 <th>{{data.latest_data.confirmed}}</th>
                 <th>{{data.latest_data.deaths}}</th>
+
             </tbody>
 
         </table>
@@ -46,3 +48,10 @@
 
 
 </form>
+
+
+<!-- <table [hidden]="isSelected">
+<tbody *ngFor="let datas of newRecoveredList">
+<th>{{datas}}</th>
+</tbody>
+</table> -->

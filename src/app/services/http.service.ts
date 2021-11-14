@@ -1,6 +1,8 @@
+import { generalStatisticsModel } from './../models/generalStatisticsModel';
 import { environment } from './../../environments/environment';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -11,8 +13,8 @@ export class HttpService {
   constructor(private http: HttpClient) { }
 
 
-  getGlobalTimeline() {
-    return this.http.get(this.globalTimeline_url)
+  getGlobalTimeline(): Observable<Array<generalStatisticsModel>> {
+    return this.http.get<Array<generalStatisticsModel>>(this.globalTimeline_url)
   }
 
   getCountries() {

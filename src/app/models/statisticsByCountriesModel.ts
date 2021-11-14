@@ -10,6 +10,7 @@ export class statisticsByCountriesModel {
     today: {
         deaths: number,
         confirmed: number
+ 
     };
     latest_data: {
         deaths: number;
@@ -21,11 +22,11 @@ export class statisticsByCountriesModel {
             recovery_rate: number;
             recovered_vs_death_ratio: number;
             cases_per_million_population: number;
-         
-    
+
+
         };
     };
-  
+
     cacheHit: boolean;
 
     // constructor() {

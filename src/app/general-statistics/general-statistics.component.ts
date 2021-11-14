@@ -4,6 +4,7 @@ import { generalStatisticsModel } from './../models/generalStatisticsModel';
 import { HttpService } from './../services/http.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { EChartsOption } from 'echarts';
 
 
 @Component({
@@ -17,12 +18,16 @@ export class GeneralStatisticsComponent implements OnInit, OnDestroy {
   dataForm: FormGroup;
   datesJSON: Array<any> = [];
   dates: Array<generalStatisticsModel> = [];
+  _chartOptions: EChartsOption;
+  _theme: string;
+  isChartDarkMode: boolean = false;
 
   constructor(private httpservice: HttpService, private pipe: DatePipe) { }
 
   ngOnInit(): void {
     this.createDatesInstance()
-    this.returnGeneralTimelineData()
+    this.returnGeneralTimelineData();
+
 
   }
 
@@ -41,14 +46,14 @@ export class GeneralStatisticsComponent implements OnInit, OnDestroy {
     this.httpservice.getGlobalTimeline().subscribe((response) => {
       this.generalTimelineJSON.push(response);
       this.datesJSON.push(response)
-      this.parseDate(this.datesJSON)
+      this.parseDates(this.datesJSON)
       this.returnParsedData(this.generalTimelineJSON)
-      this.setDefaultValues();
+      this.setDefaultDates();
 
     })
   }
 
-  parseDate(array: any) {
+  parseDates(array: any) {
     for (let index = 0; index < array.length; index++) {
       this.dates = array[index].data
 
@@ -56,7 +61,7 @@ export class GeneralStatisticsComponent implements OnInit, OnDestroy {
 
   }
 
-  get parsedDates() {
+  get dateList() {
     return this.dates.map((item) => {
       return item.date;
     })
@@ -71,15 +76,8 @@ export class GeneralStatisticsComponent implements OnInit, OnDestroy {
 
   get parsedData() {
 
-    return this.generalTimeline
+    return this.generalTimeline;
   }
-
-  chouse(e: any) {
-
-    this.returnFiltredData(e.value)
-
-  }
-
 
   returnFiltredData(inputDate: string) {
     this.httpservice.getGlobalTimeline().subscribe((response) => {
@@ -97,7 +95,7 @@ export class GeneralStatisticsComponent implements OnInit, OnDestroy {
 
   }
 
-  setDefaultValues() {
+  setDefaultDates() {
     var today = new Date();
     let todayParsed = this.pipe.transform(today, 'yyyy-MM-dd')
     let minusDay = today.setDate(today.getDate() - 1);
@@ -123,6 +121,63 @@ export class GeneralStatisticsComponent implements OnInit, OnDestroy {
 
 
   }
+
+  selectedDate(date: any) {
+
+    this.returnFiltredData(date.value)
+    this.returnValuesForCart(date.value)
+  }
+
+
+
+  returnValuesForCart(input: any) {
+    const filtreConfirmed = this.dates.filter((item) => {
+      return item.date == input
+    })
+
+    const mapConfirmed = filtreConfirmed.map((item) => {
+      return item.confirmed
+    })
+    const mapDeaths = filtreConfirmed.map((item) => {
+      return item.deaths
+    })
+    const mapRecovered = filtreConfirmed.map((item) => {
+      return item.recovered
+    })
+
+    this.dataChart(mapConfirmed, mapDeaths, mapRecovered)
+  }
+
+
+
+  dataChart(confirmed: any, deaths: any, recovered: any) {
+    const confirmedData = JSON.parse(confirmed);
+    const deathesData = JSON.parse(deaths);
+    const recoveredData = JSON.parse(recovered);
+    this._theme = (this.isChartDarkMode) ? 'dark' : ''
+    this._chartOptions = {
+      xAxis: {
+        type: 'category',
+        data: ['Confirmed', 'Deaths', 'Recovered']
+      },
+      yAxis: {
+        type: 'value'
+      },
+      series: [
+        {
+          data: [confirmedData, deathesData, recoveredData],
+          type: 'line'
+        }
+      ]
+    }
+  }
+  changeChartMode(event: any) {
+    console.log(event)
+    return { mode: this.isChartDarkMode = !this.isChartDarkMode }
+
+
+  }
+ 
 
 }
 
