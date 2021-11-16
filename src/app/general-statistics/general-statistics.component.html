@@ -1,16 +1,19 @@
-<p>general-statistics works!</p>
 <form [formGroup]="dataForm"  >
 
 
+<div class="selectDAteDiv">
+  <mat-form-field appearance="fill">
+    <mat-label>select date</mat-label>
+    <mat-select (selectionChange)="selectedDate($event)"  formControlName="date" >
+      <mat-option  *ngFor='let dates of dateList' [value]="dates">
+        {{dates}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
 
- <mat-form-field appearance="fill">
-        <mat-label>select date</mat-label>
-        <mat-select (selectionChange)="selectedDate($event)"  formControlName="date" >
-          <mat-option  *ngFor='let dates of dateList' [value]="dates">
-            {{dates}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
+
+
       <div class="tableDiv">
     <table>
         <thead>
@@ -36,8 +39,13 @@
     </table>
 </div>
 </form>
-<mat-slide-toggle (change)="changeChartMode($event)">dark mode</mat-slide-toggle>
-<div echarts [options]="_chartOptions" [theme]="_theme" >
+<!-- <mat-slide-toggle (change)="changeChartMode($event)">dark mode</mat-slide-toggle> -->
+<button (click)="showChart()"  mat-button color="primary">show chart</button>
+<div class="generalChart">
+  <div class="lineChart" echarts [options]="_lineChartOptions"  >
 
+
+  </div>
 
 </div>
+

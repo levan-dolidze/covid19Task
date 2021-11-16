@@ -1,3 +1,5 @@
+import { NgxEchartsModule } from 'ngx-echarts';
+import { MatButtonModule } from '@angular/material/button';
 import { RoundNumberPipe } from './../pipes/round-number.pipe';
 
 import { MatSelectModule } from '@angular/material/select';
@@ -27,7 +29,8 @@ import { StatisticsByCountriesComponent } from './statistics-by-countries.compon
     MatDatepickerModule,
     MatNativeDateModule,
     MatSelectModule,
-
+    MatButtonModule,
+    NgxEchartsModule
 
    
   ]

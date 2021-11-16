@@ -1,7 +1,7 @@
+import { EChartsOption } from 'echarts';
 import { FormGroup, FormControl } from '@angular/forms';
 import { statisticsByCountriesModel } from './../models/statisticsByCountriesModel';
 import { HttpService } from './../services/http.service';
-
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
 @Component({
@@ -12,108 +12,381 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 export class StatisticsByCountriesComponent implements OnInit, OnDestroy {
   statisticsByCountries: Array<statisticsByCountriesModel> = [];
   statisticsByCountriesJSON: any;
-  countryNames: Array<any> = [];
-  countryNamesJSON: any;
+  countryCodsArr: Array<any> = [];
+
+  countryCodeJSON: any;
+  countryCodesData: Array<any> = []
   countryForm: FormGroup;
   countryName: string;
+  countryCode: any;
   isSelected: boolean = true;
-  newRecovered: Array<any> = []
-  newRecoveredJSON: Array<any> = [];
-  dates: any
+  viewMode = 'ShowAllTimeChart';
+  _linechartOptions: EChartsOption;
+  _barChartOptions: EChartsOption;
+  _Last3MonthLinechartOptions: EChartsOption;
+  _Last3MonthbarChartOptions: EChartsOption;
+
+  IstimeRangeSelectShow: boolean = true;
+  // isChartDarkMode: boolean = false;
+
+  responseData: Array<any> = [];
 
   constructor(private http: HttpService) { }
 
+
   ngOnInit(): void {
     this.createCountryFormInstance();
-    this.returnCountryNames();
-    this.returnTodayRecovered()
-    this.returnData()
+    this.returnData();
 
   }
   createCountryFormInstance() {
     this.countryForm = new FormGroup({
-      countryName: new FormControl(null)
+      countryName: new FormControl(null),
+      countryCode: new FormControl(null)
     })
   }
+  returnByCountryName(country?: any) {
+
+    this.http.getCoutriesByCode(country).subscribe((response) => {
+      this.countryCodeJSON = response;
+      this.countryCodesData = this.countryCodeJSON
+    })
+  }
+
   returnData() {
     this.http.getCountries().subscribe((response) => {
       this.statisticsByCountriesJSON = response
-      this.statisticsByCountries = this.statisticsByCountriesJSON.data;
-    })
-  }
-
-  returnCountryNames() {
-    this.http.getCountries().subscribe((response) => {
-      this.countryNamesJSON = response;
-      this.countryNames = this.countryNamesJSON.data;
-
+      this.countryCodsArr = this.statisticsByCountriesJSON.data;
 
     })
   }
 
-  mapCountryNames() {
 
-    const countryNames = this.countryNames.map((item: any) => {
-      return item.name;
+  mapCountryCodes() {
+    const countryCode = this.countryCodsArr.map((item: any) => {
+      return item.code;
     })
-    return countryNames
 
+    return countryCode
+  }
+  get countryCodeList() {
+    return this.mapCountryCodes()
   }
 
-  get countryNameList() {
-    return this.mapCountryNames()
-  }
 
-  selectedCountryName(e: any) {
-    
+  returnFiltredData(inputData: any) {
+    this.http.getCoutriesByCode(inputData).subscribe((response) => {
+      this.responseData = []
+      this.responseData.push(response)
+      console.log(this.responseData)
+      this.returnValuesForCart(inputData, this.responseData)
+    })
+
+  };
+
+
+
+
+
+
+  selectCountryCodes(e: any) {
+    this.timeRangeSelect()
     const selectedCountry = e.value;
     this.returnFiltredData(selectedCountry)
     this.isSelected = (e.value) ? false : true;
- 
-
-  }
-  returnFiltredData(inputData: any) {
-    this.http.getCountries().subscribe((response) => {
-      this.statisticsByCountriesJSON = response
-      this.statisticsByCountries = this.statisticsByCountriesJSON.data;
-
-      const filtred = this.statisticsByCountries.filter((item) => {
-        return item.name === inputData;
-      })
-
-      this.statisticsByCountries = filtred
-
-    })
-
+    this.returnValuesForCart(selectedCountry)
+    this.returnByCountryName(selectedCountry)
+    
   }
 
 
-  returnTodayRecovered() {
-    this.http.getGlobalTimeline().subscribe((response) => {
-      this.newRecoveredJSON.push(response)
-      this.findNewRecovered(this.newRecoveredJSON)
 
-    })
+  returnValuesForCart(selectedCountry: any, responseChart?: any) {
+    let filtredArr = [];
+  
+      for (let index = 0; index < responseChart.length; index++) {
+        filtredArr = (responseChart[index].data.timeline);
+  
+      };
+    
+    
+    console.log(filtredArr)
+
+
+    let mapConfirmed = filtredArr.map((item: any) => {
+      return item.confirmed;
+    });
+
+    let mapDeaths = filtredArr.map((item: any) => {
+      return item.deaths;
+    });
+
+    let mapRecovered = filtredArr.map((item: any) => {
+      return item.recovered;
+    });
+    let mapAllDate = filtredArr.map((item: any) => {
+      return item.date;
+    });
+
+    let mapNewConfirmed = filtredArr.map((item: any) => {
+      return item.new_confirmed;
+    });
+    let mapNewDeaths = filtredArr.map((item: any) => {
+      return item.new_deaths;
+    });
+    let mapNewRecovered = filtredArr.map((item: any) => {
+      return item.new_recovered;
+    });
+    const last3Month = []
+    for (let index = 0; index < 90; index++) {
+      last3Month.push(filtredArr[index]);
+
+    };
+
+    let mapConfirmedLast3Month = last3Month.map((item: any) => {
+      return item.confirmed;
+    });
+    console.log(last3Month)
+    let mapDeathsLast3Month = last3Month.map((item: any) => {
+      return item.deaths;
+    });
+    let mapRecoveredLast3Month = last3Month.map((item: any) => {
+      return item.recovered;
+    });
+    let mapLast3MonthDate = last3Month.map((item: any) => {
+      return item.date;
+    });
+
+
+    let mapNewConfirmedLast3Mont = last3Month.map((item: any) => {
+      return item.new_confirmed;
+    });
+    let mapNewDeathsLast3Mont = last3Month.map((item: any) => {
+      return item.new_deaths
+    });
+    let mapNewRecoveredLast3Mont = last3Month.map((item: any) => {
+      return item.new_recovered;
+    });
+
+
+
+    this.lineChart(mapConfirmed, mapDeaths, mapRecovered, mapAllDate);
+    this.barChart(mapNewConfirmed, mapNewDeaths, mapNewRecovered, mapAllDate);
+
+    this.lineChartLast3Month(mapConfirmedLast3Month, mapDeathsLast3Month, mapRecoveredLast3Month, mapLast3MonthDate);
+    this.barChartLast3Month(mapNewConfirmedLast3Mont, mapNewDeathsLast3Mont, mapNewRecoveredLast3Mont, mapLast3MonthDate);
+  }
+  lineChart(confirmedArr: any, deathsArr: any, recoveredArr: any, allDateArr: any) {
+
+
+    this._linechartOptions = {
+      title: {
+        text: 'COVID 19 Total Statiscit By Country (ALL TIME)'
+      },
+      tooltip: {
+        trigger: 'axis'
+      },
+      legend: {
+        data: ['confirmed', 'recovered', 'deaths']
+      },
+      grid: {
+        left: '5%',
+        right: '5%',
+        bottom: '5%',
+        containLabel: true
+      },
+      toolbox: {
+        feature: {
+          saveAsImage: {}
+        }
+      },
+      xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        data: allDateArr
+      },
+      yAxis: {
+        type: 'value'
+      },
+      series: [
+
+        {
+          name: 'confirmed',
+          type: 'line',
+          stack: 'Total',
+          data: confirmedArr
+        },
+        {
+          name: 'recovered',
+          type: 'line',
+          stack: 'Total',
+          data: recoveredArr
+        },
+        {
+          name: 'deaths',
+          type: 'line',
+          stack: 'Total',
+          data: deathsArr
+        }
+      ]
+    };
+
+
+
   }
 
-  findNewRecovered(array: any) {
-    for (let index = 0; index < array.length; index++) {
-      this.dates = array[index].data;
 
+  barChart(newConfirmedArr: any, newDeathsArr: any, newRecoveredArr: any, dateArr: any) {
+
+    this._barChartOptions = {
+      title: {
+        text: 'COVID 19 Daily Statiscit By Country (ALL TIME)'
+      },
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          type: 'shadow'
+        }
+      },
+      legend: {},
+      grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+      },
+      xAxis: {
+        type: 'value',
+        boundaryGap: [0, 0.01]
+      },
+      yAxis: {
+        type: 'category',
+        data: dateArr
+      },
+      series: [
+        {
+          name: 'new confirmed',
+          type: 'bar',
+          data: newConfirmedArr
+        },
+        {
+          name: 'new deaths',
+          type: 'bar',
+          data: newDeathsArr
+        },
+        {
+          name: 'new recovered',
+          type: 'bar',
+          data: newRecoveredArr
+        }
+      ]
     }
-
   }
 
-  get newRecoveredList() {
-    return this.dates.map((item: any) => {
-      return item.new_recovered
-    })
+  lineChartLast3Month(confirmedArr: any, deathsArr: any, recoveredArr: any, allDateArr: any) {
+    this._Last3MonthLinechartOptions = {
+      title: {
+        text: 'COVID 19 Total Statiscit By Country (LAST 3 MONTH)'
+      },
+      tooltip: {
+        trigger: 'axis'
+      },
+      legend: {
+        data: ['confirmed', 'recovered', 'deaths']
+      },
+      grid: {
+        left: '5%',
+        right: '5%',
+        bottom: '5%',
+        containLabel: true
+      },
+      toolbox: {
+        feature: {
+          saveAsImage: {}
+        }
+      },
+      xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        data: allDateArr
+      },
+      yAxis: {
+        type: 'value'
+      },
+      series: [
+
+        {
+          name: 'confirmed',
+          type: 'line',
+          stack: 'Total',
+          data: confirmedArr
+        },
+        {
+          name: 'recovered',
+          type: 'line',
+          stack: 'Total',
+          data: recoveredArr
+        },
+        {
+          name: 'deaths',
+          type: 'line',
+          stack: 'Total',
+          data: deathsArr
+        }
+      ]
+    };
   }
 
-  get gg() {
-    console.log(typeof this.countryNamesJSON.data)
-    return this.newRecoveredList
+  barChartLast3Month(newConfirmedArr: any, newDeathsArr: any, newRecoveredArr: any, dateArr: any) {
+    this._Last3MonthbarChartOptions = {
+      title: {
+        text: 'COVID 19 Daily Statiscit By Country (LAST 3 MONTH)'
+      },
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          type: 'shadow'
+        }
+      },
+      legend: {},
+      grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+      },
+      xAxis: {
+        type: 'value',
+        boundaryGap: [0, 0.01]
+      },
+      yAxis: {
+        type: 'category',
+        data: dateArr
+      },
+      series: [
+        {
+          name: 'new confirmed',
+          type: 'bar',
+          data: newConfirmedArr
+        },
+        {
+          name: 'new deaths',
+          type: 'bar',
+          data: newDeathsArr
+        },
+        {
+          name: 'new recovered',
+          type: 'bar',
+          data: newRecoveredArr
+        }
+      ]
+    }
   }
+
+  timeRangeSelect() {
+    this.IstimeRangeSelectShow = false;
+  }
+
 
   ngOnDestroy() {
 

@@ -1,6 +1,12 @@
+.tableDiv{
+    width: 100%;
+
+}
+
 table{
     border-collapse: collapse;
     text-align: center;
+    margin: 0 auto;
 }
 td,th{
     border: 1px solid white;
@@ -16,4 +22,13 @@ th:nth-child(even){
 th:hover{
     background-color: rgb(141, 138, 133);
     
+}
+.selectDAteDiv{
+    padding: 20px;
+}
+.generalChart{
+    padding: 50px;
+}
+.lineChart{
+    padding: 20px;
 }

@@ -1,3 +1,4 @@
+import { statisticsByCountriesModel } from './../models/statisticsByCountriesModel';
 import { generalStatisticsModel } from './../models/generalStatisticsModel';
 import { environment } from './../../environments/environment';
 import { Injectable } from '@angular/core';
@@ -14,10 +15,14 @@ export class HttpService {
 
 
   getGlobalTimeline(): Observable<Array<generalStatisticsModel>> {
-    return this.http.get<Array<generalStatisticsModel>>(this.globalTimeline_url)
-  }
+    return this.http.get<Array<generalStatisticsModel>>(this.globalTimeline_url);
+  };
 
-  getCountries() {
-    return this.http.get(this.countries_url)
-  }
-}
+  getCountries():Observable<Array<statisticsByCountriesModel>> {
+    return this.http.get<Array<statisticsByCountriesModel>>(this.countries_url);
+  };
+
+  getCoutriesByCode(countryInicial: statisticsByCountriesModel): Observable<Array<statisticsByCountriesModel>> {
+    return this.http.get<Array<statisticsByCountriesModel>>(`${this.countries_url}/${countryInicial}`);
+  };
+};

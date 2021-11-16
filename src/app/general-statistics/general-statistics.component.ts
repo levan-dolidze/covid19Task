@@ -1,6 +1,5 @@
 import { DatePipe } from '@angular/common';
 import { generalStatisticsModel } from './../models/generalStatisticsModel';
-
 import { HttpService } from './../services/http.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
@@ -18,9 +17,11 @@ export class GeneralStatisticsComponent implements OnInit, OnDestroy {
   dataForm: FormGroup;
   datesJSON: Array<any> = [];
   dates: Array<generalStatisticsModel> = [];
-  _chartOptions: EChartsOption;
+  _lineChartOptions: EChartsOption;
+ 
   _theme: string;
   isChartDarkMode: boolean = false;
+
 
   constructor(private httpservice: HttpService, private pipe: DatePipe) { }
 
@@ -125,60 +126,98 @@ export class GeneralStatisticsComponent implements OnInit, OnDestroy {
   selectedDate(date: any) {
 
     this.returnFiltredData(date.value)
-    this.returnValuesForCart(date.value)
+    this.returnValuesForCart()
   }
 
+  showChart() {
+    this.returnValuesForCart()
+  }
 
+  returnValuesForCart() {
 
-  returnValuesForCart(input: any) {
-    const filtreConfirmed = this.dates.filter((item) => {
-      return item.date == input
-    })
-
-    const mapConfirmed = filtreConfirmed.map((item) => {
+    const allDate = this.dates.map((item) => {
+      return item.date
+    });
+    const allConfirmed = this.dates.map((item) => {
       return item.confirmed
-    })
-    const mapDeaths = filtreConfirmed.map((item) => {
+    });
+    const allRecovered = this.dates.map((item) => {
+      return item.recovered
+    });
+
+    const allDeaths = this.dates.map((item) => {
       return item.deaths
     })
-    const mapRecovered = filtreConfirmed.map((item) => {
-      return item.recovered
-    })
-
-    this.dataChart(mapConfirmed, mapDeaths, mapRecovered)
+    this.lineChart(allConfirmed, allDeaths, allRecovered, allDate, this._lineChartOptions)
+   
   }
 
 
+  lineChart(confirmedArr: any, deathsArr: any, recoveredArr: any, dateArr: any, lineChartObj: any) {
 
-  dataChart(confirmed: any, deaths: any, recovered: any) {
-    const confirmedData = JSON.parse(confirmed);
-    const deathesData = JSON.parse(deaths);
-    const recoveredData = JSON.parse(recovered);
-    this._theme = (this.isChartDarkMode) ? 'dark' : ''
-    this._chartOptions = {
+    // this._theme = (this.isChartDarkMode) ? 'dark' : ''
+    this._lineChartOptions = {
+      title: {
+        text: 'COVID 19 General Statistics'
+      },
+      tooltip: {
+        trigger: 'axis'
+      },
+      legend: {
+        data: ['confirmed', 'recovered', 'deaths']
+      },
+      grid: {
+        left: '5%',
+        right: '5%',
+        bottom: '5%',
+        containLabel: true
+      },
+      toolbox: {
+        feature: {
+          saveAsImage: {}
+        }
+      },
       xAxis: {
         type: 'category',
-        data: ['Confirmed', 'Deaths', 'Recovered']
+        boundaryGap: false,
+        data: dateArr
       },
       yAxis: {
         type: 'value'
       },
       series: [
+
         {
-          data: [confirmedData, deathesData, recoveredData],
-          type: 'line'
+          name: 'confirmed',
+          type: 'line',
+          stack: 'Total',
+          data: confirmedArr
+        },
+        {
+          name: 'recovered',
+          type: 'line',
+          stack: 'Total',
+          data: recoveredArr
+        },
+        {
+          name: 'deaths',
+          type: 'line',
+          stack: 'Total',
+          data: deathsArr
         }
       ]
-    }
-  }
-  changeChartMode(event: any) {
-    console.log(event)
-    return { mode: this.isChartDarkMode = !this.isChartDarkMode }
+    };
+    // changeChartMode() {
+
+    //   return { mode: this.isChartDarkMode = !this.isChartDarkMode }
+
+
+    // }
 
 
   }
- 
+
+
+
 
 }
-
-

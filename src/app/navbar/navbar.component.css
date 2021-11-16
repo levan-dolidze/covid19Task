@@ -2,6 +2,9 @@
 .mainConteiner{
     width: 100%;
     box-shadow: 0 3px 15px rgba(78, 76, 76, 0.23);
+    position: sticky;
+    z-index: 1;
+    top: 0px;
 }
 .routerLinkCont{
     background-color: white;

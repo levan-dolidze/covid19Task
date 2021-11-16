@@ -1,17 +1,32 @@
-<p>statistics-by-countries works!</p>
 <form [formGroup]="countryForm">
 
-    <mat-form-field appearance="fill">
+    <!-- <mat-form-field appearance="fill">
         <mat-label>select country </mat-label>
         <mat-select (selectionChange)="selectedCountryName($event)" formControlName="countryName">
             <mat-option *ngFor='let countries of countryNameList' [value]="countries">
                 {{countries}}
             </mat-option>
         </mat-select>
-    </mat-form-field>
+    </mat-form-field> -->
+    <div class="selectCountryCodesDiv">
+        <mat-form-field appearance="fill">
+            <mat-label>select country code </mat-label>
+            <mat-select (selectionChange)="selectCountryCodes($event)" formControlName="countryCode">
+                <mat-option *ngFor='let countryCodes of countryCodeList' [value]="countryCodes">
+                    {{countryCodes}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
 
-    <div  [hidden]="isSelected" class="tableDiv">
-        <table>
+        <span class="countryTitle" *ngFor="let name of responseData ">
+            <h3> {{name.data.name}}</h3>
+        </span>
+    </div>
+
+
+
+    <div [hidden]="isSelected" class="tableDiv">
+        <table *ngIf="responseData">
             <thead>
                 <th>population</th>
                 <th>updated at </th>
@@ -28,18 +43,20 @@
 
 
             </thead>
-            <tbody  *ngFor='let data of statisticsByCountries'>
+            <tbody *ngFor='let data of responseData'>
 
-                <th>{{data.population}}</th>
-                <th>{{data.updated_at}}</th>
-                <th>{{data.today.deaths}}</th>
-                <th>{{data.today.confirmed}}</th>
-                <th>{{data.latest_data.calculated.death_rate|roundNumber}}</th>
-                <th>{{data.latest_data.calculated.recovery_rate|roundNumber}}</th>
-                <th>{{data.latest_data.calculated.cases_per_million_population|roundNumber}}</th>
-                <th>{{data.latest_data.recovered}}</th>
-                <th>{{data.latest_data.confirmed}}</th>
-                <th>{{data.latest_data.deaths}}</th>
+                <th>{{data.data.population}}</th>
+                <th>{{data.data.updated_at}}</th>
+                <th>{{data.data.today.deaths}}</th>
+                <th>{{data.data.today.confirmed}}</th>
+                <th>{{data.data.latest_data.calculated.death_rate|roundNumber}}</th>
+                <th>{{data.data.latest_data.calculated.recovery_rate|roundNumber}}</th>
+                <th>{{data.data.latest_data.calculated.cases_per_million_population|roundNumber}}</th>
+                <th>{{data.data.latest_data.recovered}}</th>
+                <th>{{data.data.latest_data.confirmed}}</th>
+                <th>{{data.data.latest_data.deaths}}</th>
+                <th *ngIf="data.data.timeline.length!=0;else noValue">{{data.data.timeline[0].new_recovered}}</th>
+                <ng-template #noValue>N/A</ng-template>
 
             </tbody>
 
@@ -50,8 +67,40 @@
 </form>
 
 
-<!-- <table [hidden]="isSelected">
-<tbody *ngFor="let datas of newRecoveredList">
-<th>{{datas}}</th>
-</tbody>
-</table> -->
+<!-- <button mat-button color="primary">show chart</button> -->
+
+
+<div class="timeRangeBtns" [hidden]=IstimeRangeSelectShow>
+
+    <button mat-button (click)="viewMode='ShowAllTimeChart'">All Time</button>
+    <button mat-button (click)="viewMode='view3MonthChart'">Last 3 Month</button>
+</div>
+
+
+
+<div [ngSwitch]="viewMode">
+    <div *ngSwitchCase="'ShowAllTimeChart'">
+        <div class="AlltimeCharts">
+            <div class="lineChartDiv" echarts [options]="_linechartOptions">
+            </div>
+
+            <div class="barChartDiv" echarts [options]="_barChartOptions">
+
+
+            </div>
+        </div>
+
+    </div>
+
+    <div *ngSwitchCase="'view3MonthChart'">
+        <div class="AlltimeCharts">
+            <div class="lineChartDiv" echarts [options]="_Last3MonthLinechartOptions">
+            </div>
+            <div class="barChartDiv" echarts [options]="_Last3MonthbarChartOptions">
+
+
+            </div>
+
+        </div>
+    </div>
+</div>

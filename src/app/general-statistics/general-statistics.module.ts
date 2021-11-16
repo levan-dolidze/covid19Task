@@ -10,7 +10,7 @@ import {MatDatepicker, MatDatepickerModule} from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { NgxEchartsModule } from 'ngx-echarts';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
-
+import {MatButtonModule} from '@angular/material/button';
 @NgModule({
   declarations: [
     GeneralStatisticsComponent
@@ -25,7 +25,8 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
     MatNativeDateModule,
     MatSelectModule,
     NgxEchartsModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    MatButtonModule
 
   
 
