@@ -1,51 +1,49 @@
-<form [formGroup]="dataForm"  >
+<form [formGroup]="dataForm">
+
+  <div class="selectDAteDiv">
+    <mat-form-field appearance="fill">
+      <mat-label>select date</mat-label>
+      <mat-select (selectionChange)="selectedDate($event)" formControlName="date">
+        <mat-option *ngFor='let dates of dateList' [value]="dates">
+          {{dates}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
 
 
-<div class="selectDAteDiv">
-  <mat-form-field appearance="fill">
-    <mat-label>select date</mat-label>
-    <mat-select (selectionChange)="selectedDate($event)"  formControlName="date" >
-      <mat-option  *ngFor='let dates of dateList' [value]="dates">
-        {{dates}}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-</div>
 
-
-
-      <div class="tableDiv">
+  <div class="tableDiv">
     <table>
-        <thead>
-            <th>date</th>
-            <th>confirmed</th>
-            <th>new confirmed</th>
-            <th>deaths</th>
-            <th>new deaths</th>
-            <th>recovered</th>
-            <th>new recovered</th>
+      <thead>
+        <th>date</th>
+        <th>confirmed</th>
+        <th>deaths</th>
+        <th>recovered</th>
+        <th>new confirmed</th>
+        <th>new deaths</th>
+        <th>new recovered</th>
 
-        </thead>
-        <tbody  *ngFor='let data of parsedData'>
-            <th>{{data.date}}</th>
-            <th>{{data.confirmed}}</th>
-            <th>{{data.new_confirmed}}</th>
-            <th>{{data.deaths}}</th>
-            <th>{{data.new_deaths}}</th>
-            <th>{{data.recovered}} </th>
-            <th>{{data.new_recovered}}</th>
-        </tbody>
+      </thead>
+      <tbody *ngFor='let data of parsedData'>
+        <td>{{data.date|date}}</td>
+        <td>{{data.confirmed}}</td>
+        <td>{{data.deaths}}</td>
+        <td>{{data.new_confirmed}}</td>
+        <td>{{data.recovered}} </td>
+        <td>{{data.new_deaths}}</td>
+        <td>{{data.new_recovered}}</td>
+      </tbody>
 
     </table>
-</div>
+  </div>
 </form>
-<!-- <mat-slide-toggle (change)="changeChartMode($event)">dark mode</mat-slide-toggle> -->
-<button (click)="showChart()"  mat-button color="primary">show chart</button>
+
+<button (click)="showChart()" mat-button color="primary">show chart</button>
 <div class="generalChart">
-  <div class="lineChart" echarts [options]="_lineChartOptions"  >
+  <div class="lineChart" echarts [options]="_lineChartOptions">
 
 
   </div>
 
 </div>
-

@@ -30,33 +30,37 @@
             <thead>
                 <th>population</th>
                 <th>updated at </th>
-                <th>today confirmed</th>
-                <th>today death</th>
-                <th>death rate </th>
-                <th>recovery rate </th>
-                <th>cases per million population</th>
                 <th> recovered</th>
                 <th> confirmed</th>
                 <th> deaths</th>
+                <th>today confirmed</th>
+                <th>today death</th>
                 <th>today recovered</th>
+                <th>death rate </th>
+                <th>recovery rate </th>
+                <th>cases per million population</th>
+         
+          
 
 
 
             </thead>
             <tbody *ngFor='let data of responseData'>
 
-                <th>{{data.data.population}}</th>
-                <th>{{data.data.updated_at}}</th>
-                <th>{{data.data.today.deaths}}</th>
-                <th>{{data.data.today.confirmed}}</th>
-                <th>{{data.data.latest_data.calculated.death_rate|roundNumber}}</th>
-                <th>{{data.data.latest_data.calculated.recovery_rate|roundNumber}}</th>
-                <th>{{data.data.latest_data.calculated.cases_per_million_population|roundNumber}}</th>
-                <th>{{data.data.latest_data.recovered}}</th>
-                <th>{{data.data.latest_data.confirmed}}</th>
-                <th>{{data.data.latest_data.deaths}}</th>
-                <th *ngIf="data.data.timeline.length!=0;else noValue">{{data.data.timeline[0].new_recovered}}</th>
-                <ng-template #noValue>N/A</ng-template>
+                <td>{{data.data.population}}</td>
+                <td>{{data.data.updated_at|date}}</td>
+                <td>{{data.data.latest_data.recovered}}</td>
+                <td>{{data.data.latest_data.confirmed}}</td>
+                <td>{{data.data.latest_data.deaths}}</td>
+                <td>{{data.data.today.deaths}}</td>
+                <td>{{data.data.today.confirmed}}</td>
+                <td *ngIf="data.data.timeline.length!=0;else noValue">{{data.data.timeline[0].new_recovered}}</td>
+                <ng-template #noValue> <td>N/A</td> </ng-template>
+                <td>{{data.data.latest_data.calculated.death_rate|roundNumber}}</td>
+                <td>{{data.data.latest_data.calculated.recovery_rate|roundNumber}}</td>
+                <td>{{data.data.latest_data.calculated.cases_per_million_population|roundNumber}}</td>
+           
+            
 
             </tbody>
 

@@ -1,13 +1,14 @@
 
 .mainConteiner{
-    width: 100%;
     box-shadow: 0 3px 15px rgba(78, 76, 76, 0.23);
     position: sticky;
     z-index: 1;
-    top: 0px;
+    top: 0px
+  
 }
 .routerLinkCont{
     background-color: white;
+
     padding: 30px;
 }
 a{
@@ -18,6 +19,6 @@ a{
     margin-left: 20px;
 }
 .router-link-active{
-    background-color: rgb(206, 194, 194);
+    background-color: rgb(179, 179, 219);;
     padding: 10px;
 }

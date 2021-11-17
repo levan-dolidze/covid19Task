@@ -18,9 +18,7 @@ export class GeneralStatisticsComponent implements OnInit, OnDestroy {
   datesJSON: Array<any> = [];
   dates: Array<generalStatisticsModel> = [];
   _lineChartOptions: EChartsOption;
- 
-  _theme: string;
-  isChartDarkMode: boolean = false;
+ isChartDarkMode: boolean = false;
 
 
   constructor(private httpservice: HttpService, private pipe: DatePipe) { }
@@ -155,7 +153,6 @@ export class GeneralStatisticsComponent implements OnInit, OnDestroy {
 
   lineChart(confirmedArr: any, deathsArr: any, recoveredArr: any, dateArr: any, lineChartObj: any) {
 
-    // this._theme = (this.isChartDarkMode) ? 'dark' : ''
     this._lineChartOptions = {
       title: {
         text: 'COVID 19 General Statistics'
@@ -207,12 +204,7 @@ export class GeneralStatisticsComponent implements OnInit, OnDestroy {
         }
       ]
     };
-    // changeChartMode() {
 
-    //   return { mode: this.isChartDarkMode = !this.isChartDarkMode }
-
-
-    // }
 
 
   }

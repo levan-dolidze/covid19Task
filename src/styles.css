@@ -2,4 +2,4 @@
 html, body { height: 100%; padding: 0px; margin: 0px; text-transform: capitalize;}
 body {margin: 0px; font-family: Roboto, "Helvetica Neue", sans-serif;background-color: rgb(228, 228, 228); }
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif;  text-transform:capitalize }

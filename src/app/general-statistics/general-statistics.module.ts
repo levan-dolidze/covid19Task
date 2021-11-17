@@ -4,12 +4,11 @@ import { CommonModule } from '@angular/common';
 import { GeneralStatisticsRoutingModule } from './general-statistics-routing.module';
 import { GeneralStatisticsComponent } from './general-statistics.component';
 import {MatSelectModule} from '@angular/material/select';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {ReactiveFormsModule } from '@angular/forms';
 import {MatInputModule} from '@angular/material/input';
-import {MatDatepicker, MatDatepickerModule} from '@angular/material/datepicker';
+import { MatDatepickerModule} from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { NgxEchartsModule } from 'ngx-echarts';
-import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatButtonModule} from '@angular/material/button';
 @NgModule({
   declarations: [
@@ -18,14 +17,12 @@ import {MatButtonModule} from '@angular/material/button';
   imports: [
     CommonModule,
     GeneralStatisticsRoutingModule,
-    FormsModule,
     ReactiveFormsModule,
     MatInputModule,
     MatDatepickerModule,
     MatNativeDateModule,
     MatSelectModule,
     NgxEchartsModule,
-    MatSlideToggleModule,
     MatButtonModule
 
   

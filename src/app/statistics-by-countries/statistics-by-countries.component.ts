@@ -12,22 +12,21 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 export class StatisticsByCountriesComponent implements OnInit, OnDestroy {
   statisticsByCountries: Array<statisticsByCountriesModel> = [];
   statisticsByCountriesJSON: any;
-  countryCodsArr: Array<any> = [];
+  countryCodsArr: Array<string> = [];
 
   countryCodeJSON: any;
-  countryCodesData: Array<any> = []
+  countryCodesData: Array<string> = []
   countryForm: FormGroup;
   countryName: string;
-  countryCode: any;
+  countryCode: string;
   isSelected: boolean = true;
   viewMode = 'ShowAllTimeChart';
   _linechartOptions: EChartsOption;
   _barChartOptions: EChartsOption;
   _Last3MonthLinechartOptions: EChartsOption;
   _Last3MonthbarChartOptions: EChartsOption;
-
   IstimeRangeSelectShow: boolean = true;
-  // isChartDarkMode: boolean = false;
+
 
   responseData: Array<any> = [];
 
@@ -76,11 +75,11 @@ export class StatisticsByCountriesComponent implements OnInit, OnDestroy {
 
   returnFiltredData(inputData: any) {
     this.http.getCoutriesByCode(inputData).subscribe((response) => {
-      this.responseData = []
+      this.responseData = [];
       this.responseData.push(response)
-      console.log(this.responseData)
+  
       this.returnValuesForCart(inputData, this.responseData)
-    })
+    });
 
   };
 
@@ -94,23 +93,17 @@ export class StatisticsByCountriesComponent implements OnInit, OnDestroy {
     const selectedCountry = e.value;
     this.returnFiltredData(selectedCountry)
     this.isSelected = (e.value) ? false : true;
-    this.returnValuesForCart(selectedCountry)
     this.returnByCountryName(selectedCountry)
-    
-  }
+
+  };
 
 
 
-  returnValuesForCart(selectedCountry: any, responseChart?: any) {
+  returnValuesForCart(selectedCountry: any, responseChart: any) {
     let filtredArr = [];
-  
-      for (let index = 0; index < responseChart.length; index++) {
-        filtredArr = (responseChart[index].data.timeline);
-  
-      };
-    
-    
-    console.log(filtredArr)
+    for (let index = 0; index < responseChart.length; index++) {
+      filtredArr = (responseChart[index].data.timeline);   
+    };
 
 
     let mapConfirmed = filtredArr.map((item: any) => {
@@ -138,15 +131,15 @@ export class StatisticsByCountriesComponent implements OnInit, OnDestroy {
       return item.new_recovered;
     });
     const last3Month = []
-    for (let index = 0; index < 90; index++) {
+    for (let index = 0; index <= 90; index++) {
       last3Month.push(filtredArr[index]);
 
     };
 
-    let mapConfirmedLast3Month = last3Month.map((item: any) => {
+    let mapConfirmedLast3Month = last3Month.map((item:any ) => {
       return item.confirmed;
     });
-    console.log(last3Month)
+ 
     let mapDeathsLast3Month = last3Month.map((item: any) => {
       return item.deaths;
     });
@@ -386,7 +379,6 @@ export class StatisticsByCountriesComponent implements OnInit, OnDestroy {
   timeRangeSelect() {
     this.IstimeRangeSelectShow = false;
   }
-
 
   ngOnDestroy() {
 

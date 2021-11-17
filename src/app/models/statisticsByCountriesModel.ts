@@ -29,10 +29,5 @@ export class statisticsByCountriesModel {
 
     cacheHit: boolean;
 
-    // constructor() {
-
-
-
-    // }
-
+ 
 }
