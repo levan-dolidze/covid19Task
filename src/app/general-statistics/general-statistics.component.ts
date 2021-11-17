@@ -136,6 +136,8 @@ export class GeneralStatisticsComponent implements OnInit, OnDestroy {
     const allDate = this.dates.map((item) => {
       return item.date
     });
+    console.log(allDate)
+    this.reverseDate(allDate)
     const allConfirmed = this.dates.map((item) => {
       return item.confirmed
     });
@@ -150,7 +152,10 @@ export class GeneralStatisticsComponent implements OnInit, OnDestroy {
    
   }
 
-
+  reverseDate(dateArray: Array<string>) {
+    let revercedDateArray = [];
+    revercedDateArray = dateArray.reverse();
+  }
   lineChart(confirmedArr: any, deathsArr: any, recoveredArr: any, dateArr: any, lineChartObj: any) {
 
     this._lineChartOptions = {

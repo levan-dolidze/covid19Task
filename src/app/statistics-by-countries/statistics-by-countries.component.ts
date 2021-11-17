@@ -77,7 +77,7 @@ export class StatisticsByCountriesComponent implements OnInit, OnDestroy {
     this.http.getCoutriesByCode(inputData).subscribe((response) => {
       this.responseData = [];
       this.responseData.push(response)
-  
+
       this.returnValuesForCart(inputData, this.responseData)
     });
 
@@ -102,13 +102,15 @@ export class StatisticsByCountriesComponent implements OnInit, OnDestroy {
   returnValuesForCart(selectedCountry: any, responseChart: any) {
     let filtredArr = [];
     for (let index = 0; index < responseChart.length; index++) {
-      filtredArr = (responseChart[index].data.timeline);   
+      filtredArr = (responseChart[index].data.timeline);
     };
 
+    this.reverseDate(filtredArr)
 
     let mapConfirmed = filtredArr.map((item: any) => {
       return item.confirmed;
     });
+
 
     let mapDeaths = filtredArr.map((item: any) => {
       return item.deaths;
@@ -121,6 +123,7 @@ export class StatisticsByCountriesComponent implements OnInit, OnDestroy {
       return item.date;
     });
 
+
     let mapNewConfirmed = filtredArr.map((item: any) => {
       return item.new_confirmed;
     });
@@ -130,16 +133,13 @@ export class StatisticsByCountriesComponent implements OnInit, OnDestroy {
     let mapNewRecovered = filtredArr.map((item: any) => {
       return item.new_recovered;
     });
-    const last3Month = []
-    for (let index = 0; index <= 90; index++) {
-      last3Month.push(filtredArr[index]);
-
-    };
-
-    let mapConfirmedLast3Month = last3Month.map((item:any ) => {
+    const last3Month = filtredArr.slice(-90);
+   
+   
+    let mapConfirmedLast3Month = last3Month.map((item: any) => {
       return item.confirmed;
     });
- 
+
     let mapDeathsLast3Month = last3Month.map((item: any) => {
       return item.deaths;
     });
@@ -168,13 +168,19 @@ export class StatisticsByCountriesComponent implements OnInit, OnDestroy {
 
     this.lineChartLast3Month(mapConfirmedLast3Month, mapDeathsLast3Month, mapRecoveredLast3Month, mapLast3MonthDate);
     this.barChartLast3Month(mapNewConfirmedLast3Mont, mapNewDeathsLast3Mont, mapNewRecoveredLast3Mont, mapLast3MonthDate);
+  };
+
+  reverseDate(dateArray: Array<string>) {
+    let revercedDateArray = [];
+    revercedDateArray = dateArray.reverse();
   }
+
   lineChart(confirmedArr: any, deathsArr: any, recoveredArr: any, allDateArr: any) {
 
 
     this._linechartOptions = {
       title: {
-        text: 'COVID 19 Total Statiscit By Country (ALL TIME)'
+        text: 'COVID 19 Total Statiscit By Country (All Time)'
       },
       tooltip: {
         trigger: 'axis'
@@ -233,29 +239,50 @@ export class StatisticsByCountriesComponent implements OnInit, OnDestroy {
 
     this._barChartOptions = {
       title: {
-        text: 'COVID 19 Daily Statiscit By Country (ALL TIME)'
+        text: 'daily By Country (All Time)'
       },
       tooltip: {
         trigger: 'axis',
         axisPointer: {
-          type: 'shadow'
+          type: 'cross',
+          crossStyle: {
+            color: '#999'
+          }
         }
       },
-      legend: {},
-      grid: {
-        left: '3%',
-        right: '4%',
-        bottom: '3%',
-        containLabel: true
+      toolbox: {
+        feature: {
+          dataView: { show: true, readOnly: false },
+          magicType: { show: true, type: ['line', 'bar'] },
+          restore: { show: true },
+          saveAsImage: { show: true }
+        }
       },
-      xAxis: {
-        type: 'value',
-        boundaryGap: [0, 0.01]
+      legend: {
+        data: ['confirmed', 'deaths', 'recovered']
       },
-      yAxis: {
-        type: 'category',
-        data: dateArr
-      },
+      xAxis: [
+        {
+          type: 'category',
+          data: dateArr,
+          axisPointer: {
+            type: 'shadow'
+          }
+        }
+      ],
+      yAxis: [
+        {
+          type: 'value',
+
+          min: 0,
+          interval: 500,
+          axisLabel: {
+            formatter: '{value}'
+          }
+
+        }
+
+      ],
       series: [
         {
           name: 'new confirmed',
@@ -263,15 +290,16 @@ export class StatisticsByCountriesComponent implements OnInit, OnDestroy {
           data: newConfirmedArr
         },
         {
+          name: 'new recovered',
+          type: 'bar',
+          data: newRecoveredArr
+        },
+        {
           name: 'new deaths',
           type: 'bar',
           data: newDeathsArr
         },
-        {
-          name: 'new recovered',
-          type: 'bar',
-          data: newRecoveredArr
-        }
+
       ]
     }
   }
@@ -279,7 +307,7 @@ export class StatisticsByCountriesComponent implements OnInit, OnDestroy {
   lineChartLast3Month(confirmedArr: any, deathsArr: any, recoveredArr: any, allDateArr: any) {
     this._Last3MonthLinechartOptions = {
       title: {
-        text: 'COVID 19 Total Statiscit By Country (LAST 3 MONTH)'
+        text: 'Total Statiscit By Country (3 Month)'
       },
       tooltip: {
         trigger: 'axis'
@@ -333,29 +361,49 @@ export class StatisticsByCountriesComponent implements OnInit, OnDestroy {
   barChartLast3Month(newConfirmedArr: any, newDeathsArr: any, newRecoveredArr: any, dateArr: any) {
     this._Last3MonthbarChartOptions = {
       title: {
-        text: 'COVID 19 Daily Statiscit By Country (LAST 3 MONTH)'
+        text: 'daily By Country (3 Month)'
       },
       tooltip: {
         trigger: 'axis',
         axisPointer: {
-          type: 'shadow'
+          type: 'cross',
+          crossStyle: {
+            color: '#999'
+          }
         }
       },
-      legend: {},
-      grid: {
-        left: '3%',
-        right: '4%',
-        bottom: '3%',
-        containLabel: true
+      toolbox: {
+        feature: {
+          dataView: { show: true, readOnly: false },
+          magicType: { show: true, type: ['line', 'bar'] },
+          restore: { show: true },
+          saveAsImage: { show: true }
+        }
       },
-      xAxis: {
-        type: 'value',
-        boundaryGap: [0, 0.01]
+      legend: {
+        data: ['confirmed', 'deaths', 'recovered']
       },
-      yAxis: {
-        type: 'category',
-        data: dateArr
-      },
+      xAxis: [
+        {
+          type: 'category',
+          data: dateArr,
+          axisPointer: {
+            type: 'shadow'
+          }
+        }
+      ],
+      yAxis: [
+        {
+          type: 'value',
+
+          min: 0,
+          interval: 500,
+          axisLabel: {
+            formatter: '{value}'
+          }
+        }
+
+      ],
       series: [
         {
           name: 'new confirmed',
@@ -363,25 +411,31 @@ export class StatisticsByCountriesComponent implements OnInit, OnDestroy {
           data: newConfirmedArr
         },
         {
+          name: 'new recovered',
+          type: 'bar',
+          data: newRecoveredArr
+        },
+        {
           name: 'new deaths',
           type: 'bar',
           data: newDeathsArr
         },
-        {
-          name: 'new recovered',
-          type: 'bar',
-          data: newRecoveredArr
-        }
+
       ]
     }
-  }
 
+
+
+  }
   timeRangeSelect() {
     this.IstimeRangeSelectShow = false;
-  }
+  };
+
 
   ngOnDestroy() {
 
 
   }
 }
+
+

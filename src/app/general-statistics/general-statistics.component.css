@@ -2,7 +2,7 @@
     width: 100%;
 }
 
-table{
+.table{
     border-collapse: collapse;
     text-align: center;
     margin: 0 auto;
@@ -21,14 +21,12 @@ th:nth-child(even){
 td:hover{
     background-color: rgb(141, 138, 133);
     
-}
-.selectDAteDiv{
-    padding: 20px;
-}
+};
+
 .generalChart{
     padding: 50px;
     
 }
-.lineChart{
+.lineChart,.selectDateDiv{
     padding: 20px;
 }

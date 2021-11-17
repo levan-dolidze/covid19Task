@@ -1,6 +1,6 @@
 <form [formGroup]="dataForm">
 
-  <div class="selectDAteDiv">
+  <div class="selectDateDiv">
     <mat-form-field appearance="fill">
       <mat-label>select date</mat-label>
       <mat-select (selectionChange)="selectedDate($event)" formControlName="date">
@@ -14,7 +14,7 @@
 
 
   <div class="tableDiv">
-    <table>
+    <table *ngIf="parsedData" class="table">
       <thead>
         <th>date</th>
         <th>confirmed</th>
