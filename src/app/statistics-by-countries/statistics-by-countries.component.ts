@@ -1,3 +1,4 @@
+import { Subscription } from 'rxjs';
 import { EChartsOption } from 'echarts';
 import { FormGroup, FormControl } from '@angular/forms';
 import { statisticsByCountriesModel } from './../models/statisticsByCountriesModel';
@@ -14,19 +15,18 @@ export class StatisticsByCountriesComponent implements OnInit, OnDestroy {
   statisticsByCountriesJSON: any;
   countryCodsArr: Array<string> = [];
 
-  countryCodeJSON: any;
-  countryCodesData: Array<string> = []
   countryForm: FormGroup;
-  countryName: string;
+ 
   countryCode: string;
   isSelected: boolean = true;
   viewMode = 'ShowAllTimeChart';
+
   _linechartOptions: EChartsOption;
   _barChartOptions: EChartsOption;
   _Last3MonthLinechartOptions: EChartsOption;
   _Last3MonthbarChartOptions: EChartsOption;
   IstimeRangeSelectShow: boolean = true;
-
+  countryCodeDest: Subscription;
 
   responseData: Array<any> = [];
 
@@ -40,25 +40,18 @@ export class StatisticsByCountriesComponent implements OnInit, OnDestroy {
   }
   createCountryFormInstance() {
     this.countryForm = new FormGroup({
-      countryName: new FormControl(null),
       countryCode: new FormControl(null)
-    })
-  }
-  returnByCountryName(country?: any) {
+    });
+  };
 
-    this.http.getCoutriesByCode(country).subscribe((response) => {
-      this.countryCodeJSON = response;
-      this.countryCodesData = this.countryCodeJSON
-    })
-  }
 
   returnData() {
-    this.http.getCountries().subscribe((response) => {
-      this.statisticsByCountriesJSON = response
+    this.countryCodeDest = this.http.getCountries().subscribe((response) => {
+      this.statisticsByCountriesJSON = response;
       this.countryCodsArr = this.statisticsByCountriesJSON.data;
 
-    })
-  }
+    });
+  };
 
 
   mapCountryCodes() {
@@ -66,40 +59,43 @@ export class StatisticsByCountriesComponent implements OnInit, OnDestroy {
       return item.code;
     })
 
-    return countryCode
-  }
-  get countryCodeList() {
-    return this.mapCountryCodes()
-  }
+    const sortedCountryCode = countryCode.sort((a: any, b: any) => {
+      if (a > b) {
+        return 1
+      }
+      else if (a < b) {
+        return -1
+      } else {
+        return 0
+      }
+    })
+
+    return sortedCountryCode
+  };
+  get returnCountryCodeList() {
+    return this.mapCountryCodes();
+  };
 
 
   returnFiltredData(inputData: any) {
-    this.http.getCoutriesByCode(inputData).subscribe((response) => {
+    this.countryCodeDest = this.http.getCoutriesByCode(inputData).subscribe((response) => {
       this.responseData = [];
       this.responseData.push(response)
-
-      this.returnValuesForCart(inputData, this.responseData)
+      this.returnValuesForChart(inputData, this.responseData);
     });
 
   };
 
 
-
-
-
-
   selectCountryCodes(e: any) {
-    this.timeRangeSelect()
+    this.timeRangeSelect();
     const selectedCountry = e.value;
-    this.returnFiltredData(selectedCountry)
+    this.returnFiltredData(selectedCountry);
     this.isSelected = (e.value) ? false : true;
-    this.returnByCountryName(selectedCountry)
-
   };
 
 
-
-  returnValuesForCart(selectedCountry: any, responseChart: any) {
+  returnValuesForChart(selectedCountry: any, responseChart: any) {
     let filtredArr = [];
     for (let index = 0; index < responseChart.length; index++) {
       filtredArr = (responseChart[index].data.timeline);
@@ -134,8 +130,8 @@ export class StatisticsByCountriesComponent implements OnInit, OnDestroy {
       return item.new_recovered;
     });
     const last3Month = filtredArr.slice(-90);
-   
-   
+
+
     let mapConfirmedLast3Month = last3Month.map((item: any) => {
       return item.confirmed;
     });
@@ -173,14 +169,14 @@ export class StatisticsByCountriesComponent implements OnInit, OnDestroy {
   reverseDate(dateArray: Array<string>) {
     let revercedDateArray = [];
     revercedDateArray = dateArray.reverse();
-  }
+  };
 
   lineChart(confirmedArr: any, deathsArr: any, recoveredArr: any, allDateArr: any) {
 
 
     this._linechartOptions = {
       title: {
-        text: 'COVID 19 Total Statiscit By Country (All Time)'
+        text: 'Total Statiscit By Country (All Time)'
       },
       tooltip: {
         trigger: 'axis'
@@ -232,14 +228,14 @@ export class StatisticsByCountriesComponent implements OnInit, OnDestroy {
 
 
 
-  }
+  };
 
 
   barChart(newConfirmedArr: any, newDeathsArr: any, newRecoveredArr: any, dateArr: any) {
 
     this._barChartOptions = {
       title: {
-        text: 'daily By Country (All Time)'
+        text: 'Per Day(All Time)'
       },
       tooltip: {
         trigger: 'axis',
@@ -302,7 +298,7 @@ export class StatisticsByCountriesComponent implements OnInit, OnDestroy {
 
       ]
     }
-  }
+  };
 
   lineChartLast3Month(confirmedArr: any, deathsArr: any, recoveredArr: any, allDateArr: any) {
     this._Last3MonthLinechartOptions = {
@@ -356,12 +352,12 @@ export class StatisticsByCountriesComponent implements OnInit, OnDestroy {
         }
       ]
     };
-  }
+  };
 
   barChartLast3Month(newConfirmedArr: any, newDeathsArr: any, newRecoveredArr: any, dateArr: any) {
     this._Last3MonthbarChartOptions = {
       title: {
-        text: 'daily By Country (3 Month)'
+        text: 'Per Day (3 Month)'
       },
       tooltip: {
         trigger: 'axis',
@@ -426,16 +422,17 @@ export class StatisticsByCountriesComponent implements OnInit, OnDestroy {
 
 
 
-  }
+  };
   timeRangeSelect() {
     this.IstimeRangeSelectShow = false;
   };
 
 
   ngOnDestroy() {
+    this.countryCodeDest.unsubscribe();
 
 
-  }
+  };
 }
 
 

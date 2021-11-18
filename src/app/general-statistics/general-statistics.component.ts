@@ -4,6 +4,7 @@ import { HttpService } from './../services/http.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { EChartsOption } from 'echarts';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -14,27 +15,26 @@ import { EChartsOption } from 'echarts';
 export class GeneralStatisticsComponent implements OnInit, OnDestroy {
   generalTimeline: Array<generalStatisticsModel> = [];
   generalTimelineJSON: Array<any> = [];
+  generalTimelineData: Subscription;
+
   dataForm: FormGroup;
   datesJSON: Array<any> = [];
   dates: Array<generalStatisticsModel> = [];
   _lineChartOptions: EChartsOption;
- isChartDarkMode: boolean = false;
+  isChartDarkMode: boolean = false;
 
 
   constructor(private httpservice: HttpService, private pipe: DatePipe) { }
 
   ngOnInit(): void {
-    this.createDatesInstance()
+    this.createDateForm()
     this.returnGeneralTimelineData();
 
-
   }
 
-  ngOnDestroy() {
 
-  }
 
-  createDatesInstance() {
+  createDateForm() {
     this.dataForm = new FormGroup({
       date: new FormControl(null)
     });
@@ -42,7 +42,7 @@ export class GeneralStatisticsComponent implements OnInit, OnDestroy {
   };
 
   returnGeneralTimelineData() {
-    this.httpservice.getGlobalTimeline().subscribe((response) => {
+    this.generalTimelineData = this.httpservice.getGlobalTimeline().subscribe((response) => {
       this.generalTimelineJSON.push(response);
       this.datesJSON.push(response)
       this.parseDates(this.datesJSON)
@@ -60,7 +60,7 @@ export class GeneralStatisticsComponent implements OnInit, OnDestroy {
 
   }
 
-  get dateList() {
+  get returnDateList() {
     return this.dates.map((item) => {
       return item.date;
     })
@@ -79,14 +79,14 @@ export class GeneralStatisticsComponent implements OnInit, OnDestroy {
   }
 
   returnFiltredData(inputDate: string) {
-    this.httpservice.getGlobalTimeline().subscribe((response) => {
+    this.generalTimelineData = this.httpservice.getGlobalTimeline().subscribe((response) => {
       this.generalTimelineJSON.push(response)
       for (let index = 0; index < this.generalTimelineJSON.length; index++) {
         this.generalTimeline = this.generalTimelineJSON[index].data
 
       };
       const filtred = this.generalTimeline.filter((item) => {
-        return item.date == inputDate
+        return item.date === inputDate
       })
 
       this.generalTimeline = filtred
@@ -101,11 +101,11 @@ export class GeneralStatisticsComponent implements OnInit, OnDestroy {
     let minusToday = this.pipe.transform(minusDay, 'yyyy-MM-dd');
 
     const filtred = this.generalTimeline.filter((item) => {
-      return item.date == todayParsed
+      return item.date === todayParsed
 
     });
     if (filtred.length == 0) {
-      this.httpservice.getGlobalTimeline().subscribe((response) => {
+      this.generalTimelineData = this.httpservice.getGlobalTimeline().subscribe((response) => {
         this.generalTimelineJSON.push(response)
       })
       const filtred = this.generalTimeline.filter((item) => {
@@ -124,32 +124,36 @@ export class GeneralStatisticsComponent implements OnInit, OnDestroy {
   selectedDate(date: any) {
 
     this.returnFiltredData(date.value)
-    this.returnValuesForCart()
+    this.returnValuesForChart()
   }
 
   showChart() {
-    this.returnValuesForCart()
+    this.returnValuesForChart()
   }
 
-  returnValuesForCart() {
+  returnValuesForChart() {
 
     const allDate = this.dates.map((item) => {
-      return item.date
-    });
-    console.log(allDate)
-    this.reverseDate(allDate)
-    const allConfirmed = this.dates.map((item) => {
-      return item.confirmed
-    });
-    const allRecovered = this.dates.map((item) => {
-      return item.recovered
+      return item.date;
     });
 
+    this.reverseDate(allDate)
+    const allConfirmed = this.dates.map((item) => {
+      return item.confirmed;
+    });
+
+    let allConfirmedReverse = allConfirmed.reverse();
+    const allRecovered = this.dates.map((item) => {
+      return item.recovered;
+    });
+    let AllRecoveredReverse = allRecovered.reverse();
+
     const allDeaths = this.dates.map((item) => {
-      return item.deaths
-    })
-    this.lineChart(allConfirmed, allDeaths, allRecovered, allDate, this._lineChartOptions)
-   
+      return item.deaths;
+    });
+    let allDeathsReverse = allDeaths.reverse();
+    this.lineChart(allConfirmedReverse, allDeathsReverse, AllRecoveredReverse, allDate, this._lineChartOptions)
+
   }
 
   reverseDate(dateArray: Array<string>) {
@@ -214,7 +218,12 @@ export class GeneralStatisticsComponent implements OnInit, OnDestroy {
 
   }
 
+  ngOnDestroy() {
+    this.generalTimelineData.unsubscribe();
 
+
+
+  }
 
 
 }

@@ -1,18 +1,11 @@
 <form [formGroup]="countryForm">
 
-    <!-- <mat-form-field appearance="fill">
-        <mat-label>select country </mat-label>
-        <mat-select (selectionChange)="selectedCountryName($event)" formControlName="countryName">
-            <mat-option *ngFor='let countries of countryNameList' [value]="countries">
-                {{countries}}
-            </mat-option>
-        </mat-select>
-    </mat-form-field> -->
+ 
     <div class="selectCountryCodesDiv">
         <mat-form-field appearance="fill">
             <mat-label>select country code </mat-label>
             <mat-select (selectionChange)="selectCountryCodes($event)" formControlName="countryCode">
-                <mat-option *ngFor='let countryCodes of countryCodeList' [value]="countryCodes">
+                <mat-option *ngFor='let countryCodes of returnCountryCodeList' [value]="countryCodes">
                     {{countryCodes}}
                 </mat-option>
             </mat-select>
@@ -39,10 +32,6 @@
                 <th>death rate </th>
                 <th>recovery rate </th>
                 <th>cases per million population</th>
-         
-          
-
-
 
             </thead>
             <tbody *ngFor='let data of responseData'>
@@ -55,12 +44,14 @@
                 <td>{{data.data.today.deaths}}</td>
                 <td>{{data.data.today.confirmed}}</td>
                 <td *ngIf="data.data.timeline.length!=0;else noValue">{{data.data.timeline[0].new_recovered}}</td>
-                <ng-template #noValue> <td>N/A</td> </ng-template>
+                <ng-template #noValue>
+                    <td>N/A</td>
+                </ng-template>
                 <td>{{data.data.latest_data.calculated.death_rate|roundNumber}}</td>
                 <td>{{data.data.latest_data.calculated.recovery_rate|roundNumber}}</td>
                 <td>{{data.data.latest_data.calculated.cases_per_million_population|roundNumber}}</td>
-           
-            
+
+
 
             </tbody>
 
@@ -70,8 +61,6 @@
 
 </form>
 
-
-<!-- <button mat-button color="primary">show chart</button> -->
 
 
 <div class="timeRangeBtns" [hidden]=IstimeRangeSelectShow>
@@ -97,14 +86,13 @@
     </div>
 
     <div *ngSwitchCase="'view3MonthChart'">
+  
         <div class="AlltimeCharts">
-            <div class="lineChartDiv" echarts [options]="_Last3MonthLinechartOptions">
+            <div class="lineChartDiv" echarts [options]="_Last3MonthLinechartOptions" >
             </div>
-            <div class="barChartDiv" echarts [options]="_Last3MonthbarChartOptions">
-
-
+            <div class="barChartDiv" echarts [options]="_Last3MonthbarChartOptions" >
             </div>
-
         </div>
     </div>
 </div>
+

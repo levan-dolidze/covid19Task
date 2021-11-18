@@ -30,6 +30,7 @@ td:hover{
 }
 .lineChartDiv,.barChartDiv{
     padding: 20px;
+    border-radius: 5px;
    
 }
 

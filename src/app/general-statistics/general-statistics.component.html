@@ -4,7 +4,7 @@
     <mat-form-field appearance="fill">
       <mat-label>select date</mat-label>
       <mat-select (selectionChange)="selectedDate($event)" formControlName="date">
-        <mat-option *ngFor='let dates of dateList' [value]="dates">
+        <mat-option *ngFor='let dates of returnDateList' [value]="dates">
           {{dates}}
         </mat-option>
       </mat-select>
