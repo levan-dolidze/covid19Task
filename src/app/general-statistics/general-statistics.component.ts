@@ -30,7 +30,7 @@ export class GeneralStatisticsComponent implements OnInit, OnDestroy {
     this.createDateForm()
     this.returnGeneralTimelineData();
 
-  }
+  };
 
 
 
@@ -50,21 +50,21 @@ export class GeneralStatisticsComponent implements OnInit, OnDestroy {
       this.setDefaultDates();
 
     })
-  }
+  };
 
   parseDates(array: any) {
     for (let index = 0; index < array.length; index++) {
       this.dates = array[index].data
 
-    }
+    };
 
-  }
+  };
 
   get returnDateList() {
     return this.dates.map((item) => {
       return item.date;
-    })
-  }
+    });
+  };
 
   returnParsedData(array: any) {
     for (let index = 0; index < array.length; index++) {
@@ -76,7 +76,7 @@ export class GeneralStatisticsComponent implements OnInit, OnDestroy {
   get parsedData() {
 
     return this.generalTimeline;
-  }
+  };
 
   returnFiltredData(inputDate: string) {
     this.generalTimelineData = this.httpservice.getGlobalTimeline().subscribe((response) => {
@@ -92,7 +92,7 @@ export class GeneralStatisticsComponent implements OnInit, OnDestroy {
       this.generalTimeline = filtred
     })
 
-  }
+  };
 
   setDefaultDates() {
     var today = new Date();
@@ -119,17 +119,17 @@ export class GeneralStatisticsComponent implements OnInit, OnDestroy {
     }
 
 
-  }
+  };
 
   selectedDate(date: any) {
 
-    this.returnFiltredData(date.value)
-    this.returnValuesForChart()
+    this.returnFiltredData(date.value);
+    this.returnValuesForChart();
   }
 
   showChart() {
-    this.returnValuesForChart()
-  }
+    this.returnValuesForChart();
+  };
 
   returnValuesForChart() {
 
@@ -154,12 +154,12 @@ export class GeneralStatisticsComponent implements OnInit, OnDestroy {
     let allDeathsReverse = allDeaths.reverse();
     this.lineChart(allConfirmedReverse, allDeathsReverse, AllRecoveredReverse, allDate, this._lineChartOptions)
 
-  }
+  };
 
   reverseDate(dateArray: Array<string>) {
     let revercedDateArray = [];
     revercedDateArray = dateArray.reverse();
-  }
+  };
   lineChart(confirmedArr: any, deathsArr: any, recoveredArr: any, dateArr: any, lineChartObj: any) {
 
     this._lineChartOptions = {
@@ -216,14 +216,14 @@ export class GeneralStatisticsComponent implements OnInit, OnDestroy {
 
 
 
-  }
+  };
 
   ngOnDestroy() {
     this.generalTimelineData.unsubscribe();
 
 
 
-  }
+  };
 
 
 }

@@ -5,6 +5,7 @@ import { statisticsByCountriesModel } from './../models/statisticsByCountriesMod
 import { HttpService } from './../services/http.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
+
 @Component({
   selector: 'app-statistics-by-countries',
   templateUrl: './statistics-by-countries.component.html',
@@ -16,7 +17,7 @@ export class StatisticsByCountriesComponent implements OnInit, OnDestroy {
   countryCodsArr: Array<string> = [];
 
   countryForm: FormGroup;
- 
+
   countryCode: string;
   isSelected: boolean = true;
   viewMode = 'ShowAllTimeChart';
@@ -50,6 +51,9 @@ export class StatisticsByCountriesComponent implements OnInit, OnDestroy {
       this.statisticsByCountriesJSON = response;
       this.countryCodsArr = this.statisticsByCountriesJSON.data;
 
+    }, error => {
+      alert("unexpected error");
+      console.log(error)
     });
   };
 
@@ -424,7 +428,7 @@ export class StatisticsByCountriesComponent implements OnInit, OnDestroy {
 
   };
   timeRangeSelect() {
-    this.IstimeRangeSelectShow = false;
+    return {changeTimeRange:this.IstimeRangeSelectShow = false};
   };
 
 
