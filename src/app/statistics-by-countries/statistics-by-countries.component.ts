@@ -9,7 +9,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 @Component({
   selector: 'app-statistics-by-countries',
   templateUrl: './statistics-by-countries.component.html',
-  styleUrls: ['./statistics-by-countries.component.css']
+  styleUrls: ['./statistics-by-countries.component.css','../ident.css']
 })
 export class StatisticsByCountriesComponent implements OnInit, OnDestroy {
   statisticsByCountries: Array<statisticsByCountriesModel> = [];
@@ -84,7 +84,7 @@ export class StatisticsByCountriesComponent implements OnInit, OnDestroy {
   returnFiltredData(inputData: any) {
     this.countryCodeDest = this.http.getCoutriesByCode(inputData).subscribe((response) => {
       this.responseData = [];
-      this.responseData.push(response)
+      this.responseData.push(response);
       this.returnValuesForChart(inputData, this.responseData);
     });
 
@@ -105,7 +105,7 @@ export class StatisticsByCountriesComponent implements OnInit, OnDestroy {
       filtredArr = (responseChart[index].data.timeline);
     };
 
-    this.reverseDate(filtredArr)
+    this.reverseDate(filtredArr);
 
     let mapConfirmed = filtredArr.map((item: any) => {
       return item.confirmed;
@@ -146,7 +146,7 @@ export class StatisticsByCountriesComponent implements OnInit, OnDestroy {
     let mapRecoveredLast3Month = last3Month.map((item: any) => {
       return item.recovered;
     });
-    let mapLast3MonthDate = last3Month.map((item: any) => {
+    let mapLast3MonthDate = last3Month.map((item:any ) => {
       return item.date;
     });
 
@@ -155,7 +155,7 @@ export class StatisticsByCountriesComponent implements OnInit, OnDestroy {
       return item.new_confirmed;
     });
     let mapNewDeathsLast3Mont = last3Month.map((item: any) => {
-      return item.new_deaths
+      return item.new_deaths;
     });
     let mapNewRecoveredLast3Mont = last3Month.map((item: any) => {
       return item.new_recovered;

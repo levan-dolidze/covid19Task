@@ -10,7 +10,7 @@ import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-general-statistics',
   templateUrl: './general-statistics.component.html',
-  styleUrls: ['./general-statistics.component.css']
+  styleUrls: ['./general-statistics.component.css','../ident.css']
 })
 export class GeneralStatisticsComponent implements OnInit, OnDestroy {
   generalTimeline: Array<generalStatisticsModel> = [];
@@ -45,20 +45,12 @@ export class GeneralStatisticsComponent implements OnInit, OnDestroy {
     this.generalTimelineData = this.httpservice.getGlobalTimeline().subscribe((response) => {
       this.generalTimelineJSON.push(response);
       this.datesJSON.push(response)
-      this.parseDates(this.datesJSON)
       this.returnParsedData(this.generalTimelineJSON)
       this.setDefaultDates();
 
     })
   };
 
-  parseDates(array: any) {
-    for (let index = 0; index < array.length; index++) {
-      this.dates = array[index].data
-
-    };
-
-  };
 
   get returnDateList() {
     return this.dates.map((item) => {
@@ -68,8 +60,9 @@ export class GeneralStatisticsComponent implements OnInit, OnDestroy {
 
   returnParsedData(array: any) {
     for (let index = 0; index < array.length; index++) {
-      this.generalTimeline = array[index].data
-
+      let parsedData=array[index].data;
+      this.generalTimeline = parsedData;
+      this.dates = parsedData;
     };
   };
 
@@ -82,14 +75,14 @@ export class GeneralStatisticsComponent implements OnInit, OnDestroy {
     this.generalTimelineData = this.httpservice.getGlobalTimeline().subscribe((response) => {
       this.generalTimelineJSON.push(response)
       for (let index = 0; index < this.generalTimelineJSON.length; index++) {
-        this.generalTimeline = this.generalTimelineJSON[index].data
+        this.generalTimeline = this.generalTimelineJSON[index].data;
 
       };
       const filtred = this.generalTimeline.filter((item) => {
-        return item.date === inputDate
+        return item.date === inputDate;
       })
 
-      this.generalTimeline = filtred
+      this.generalTimeline = filtred;
     })
 
   };
@@ -220,9 +213,6 @@ export class GeneralStatisticsComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.generalTimelineData.unsubscribe();
-
-
-
   };
 
 

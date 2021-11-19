@@ -1,44 +1,12 @@
-.tableDiv{
-    width: 100%;
-    margin: 0 auto;
-}
 
-.table{
-    border-collapse: collapse;
-    text-align: center;
-    margin: 0 auto;
-    width: 100%;
-}
-td,th{
-    border: 1px solid white;
-    padding: 10px;
-}
-
-thead th{
-    color:rgb(75, 75, 204);
-}
-th:nth-child(even){
-    background-color: #dddddd;
-}
-td:hover{
-    background-color: rgb(141, 138, 133);
-    
-}
-.AlltimeCharts{
-    padding: 50px;
-  
-}
 .lineChartDiv,.barChartDiv{
     padding: 20px;
     border-radius: 5px;
    
 }
-
 .countryName{
     position: absolute;
-    
 }
-
 .selectCountryDiv{
     padding: 20px;
 }
@@ -47,16 +15,14 @@ td:hover{
     padding: 20px;
 }
 .countryTitle{
-    margin-left: 50px;
+ margin-left: 50px;
  justify-content: center;
  text-align: center;
  align-items: center;
-    color: rgb(75, 75, 204);
-
-
-    
+ color: rgb(75, 75, 204);
 }
 .timeRangeBtns{
   margin-top: 20px;
-    text-align: center;
+  text-align: center;
 }
+

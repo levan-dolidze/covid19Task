@@ -1,0 +1,41 @@
+.tableDiv{
+    width: 100%;
+}
+
+.table{
+    border-collapse: collapse;
+    text-align: center;
+    margin: 0 auto;
+}
+td,th{
+    border: 1px solid white;
+    padding: 10px;
+}
+
+thead th{
+    color:rgb(75, 75, 204);
+}
+th:nth-child(even){
+    background-color: #dddddd;
+}
+td:hover{
+    background-color: rgb(141, 138, 133);
+    
+}
+.Charts{
+    padding: 50px;
+    
+}
+
+@media (max-width: 1030px) {
+    .table{
+      font-size:small
+    }
+    .td,th{
+      border: 0.5px solid white;
+      padding: 5px;
+  }
+  .contryName{
+      font-size:small
+  }
+  }

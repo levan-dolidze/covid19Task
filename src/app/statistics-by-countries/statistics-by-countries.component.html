@@ -12,7 +12,7 @@
         </mat-form-field>
 
         <span class="countryTitle" *ngFor="let name of responseData ">
-            <h3> {{name.data.name}}</h3>
+            <h3 class='contryName'> {{name.data.name}}</h3>
         </span>
     </div>
 
@@ -73,7 +73,7 @@
 
 <div [ngSwitch]="viewMode">
     <div *ngSwitchCase="'ShowAllTimeChart'">
-        <div class="AlltimeCharts">
+        <div class="Charts">
             <div class="lineChartDiv" echarts [options]="_linechartOptions">
             </div>
 

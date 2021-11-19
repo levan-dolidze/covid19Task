@@ -1,32 +1,5 @@
-.tableDiv{
-    width: 100%;
-}
 
-.table{
-    border-collapse: collapse;
-    text-align: center;
-    margin: 0 auto;
-}
-td,th{
-    border: 1px solid white;
-    padding: 10px;
-}
-
-thead th{
-    color:rgb(75, 75, 204);
-}
-th:nth-child(even){
-    background-color: #dddddd;
-}
-td:hover{
-    background-color: rgb(141, 138, 133);
-    
-};
-
-.generalChart{
-    padding: 50px;
-    
-}
 .lineChart,.selectDateDiv{
     padding: 20px;
 }
+
