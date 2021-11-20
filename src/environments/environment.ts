@@ -7,7 +7,6 @@ export const environment = {
   globalTimeline: ' https://corona-api.com/timeline',
   countries:'https://corona-api.com/countries',
 
-  
 };
 
 /*

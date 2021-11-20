@@ -157,7 +157,7 @@ export class GeneralStatisticsComponent implements OnInit, OnDestroy {
 
     this._lineChartOptions = {
       title: {
-        text: 'COVID 19 General Statistics'
+        text: 'Current date Statistics'
       },
       tooltip: {
         trigger: 'axis'

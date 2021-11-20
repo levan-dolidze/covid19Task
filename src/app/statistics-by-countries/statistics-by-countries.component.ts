@@ -15,9 +15,8 @@ export class StatisticsByCountriesComponent implements OnInit, OnDestroy {
   statisticsByCountries: Array<statisticsByCountriesModel> = [];
   statisticsByCountriesJSON: any;
   countryCodsArr: Array<string> = [];
-
   countryForm: FormGroup;
-
+  responseData: Array<any> = [];
   countryCode: string;
   isSelected: boolean = true;
   viewMode = 'ShowAllTimeChart';
@@ -26,10 +25,10 @@ export class StatisticsByCountriesComponent implements OnInit, OnDestroy {
   _barChartOptions: EChartsOption;
   _Last3MonthLinechartOptions: EChartsOption;
   _Last3MonthbarChartOptions: EChartsOption;
+
   IstimeRangeSelectShow: boolean = true;
   countryCodeDest: Subscription;
 
-  responseData: Array<any> = [];
 
   constructor(private http: HttpService) { }
 
@@ -134,7 +133,6 @@ export class StatisticsByCountriesComponent implements OnInit, OnDestroy {
       return item.new_recovered;
     });
     const last3Month = filtredArr.slice(-90);
-
 
     let mapConfirmedLast3Month = last3Month.map((item: any) => {
       return item.confirmed;
