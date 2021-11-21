@@ -14,7 +14,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 export class StatisticsByCountriesComponent implements OnInit, OnDestroy {
   statisticsByCountries: Array<statisticsByCountriesModel> = [];
   statisticsByCountriesJSON: any;
-  countryCodsArr: Array<string> = [];
+  countryCodsArr: Array<any> = [];
   countryForm: FormGroup;
   responseData: Array<any> = [];
   countryCode: string;
@@ -57,26 +57,27 @@ export class StatisticsByCountriesComponent implements OnInit, OnDestroy {
   };
 
 
-  mapCountryCodes() {
-    const countryCode = this.countryCodsArr.map((item: any) => {
-      return item.code;
-    })
+  // mapCountryCodes() {
 
-    const sortedCountryCode = countryCode.sort((a: any, b: any) => {
-      if (a > b) {
-        return 1
-      }
-      else if (a < b) {
-        return -1
-      } else {
-        return 0
-      }
-    })
+  //   const countryCode = this.countryCodsArr.map((item: any) => {
+  //     return item.code;
+  //   })
 
-    return sortedCountryCode
-  };
+  //   const sortedCountryCode = countryCode.sort((a: any, b: any) => {
+  //     if (a > b) {
+  //       return 1
+  //     }
+  //     else if (a < b) {
+  //       return -1
+  //     } else {
+  //       return 0
+  //     }
+  //   })
+
+  //   return sortedCountryCode
+  // };
   get returnCountryCodeList() {
-    return this.mapCountryCodes();
+    return this.countryCodsArr;
   };
 
 
