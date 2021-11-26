@@ -10,6 +10,8 @@ import {
 } from '@angular/common/http';
 
 
+//გამოყენებულია unexpected ტიპის ერორ მესიჯი , რომელიც გაჩნდება იმ შემთხვევაში როდესაც მისამართზე მიკიტხვისას გზაში network is down,
+//მაგალიტად URL მისამართში შეცდომით ავურევთ სიმბოლოებს 
 
 @Injectable()
 export class ContentTypeInterceptor implements HttpInterceptor {

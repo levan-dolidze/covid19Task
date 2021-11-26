@@ -5,7 +5,7 @@
         <mat-form-field appearance="fill">
             <mat-label>select country code </mat-label>
             <mat-select (selectionChange)="selectCountryCodes($event)" formControlName="countryCode">
-                <mat-option *ngFor='let countryCodes of returnCountryCodeList' [value]="countryCodes.code">
+                <mat-option *ngFor='let countryCodes of sortedCountryList' [value]="countryCodes.code">
                     {{countryCodes.name}}
                 </mat-option>
             </mat-select>
@@ -68,7 +68,6 @@
     <button mat-button (click)="viewMode='ShowAllTimeChart'">All Time</button>
 
 </div>
-
 
 
 <div [ngSwitch]="viewMode">

@@ -9,6 +9,7 @@ import { MatDatepickerModule} from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { NgxEchartsModule } from 'ngx-echarts';
 import {MatButtonModule} from '@angular/material/button';
+
 @NgModule({
   declarations: [
     GeneralStatisticsComponent

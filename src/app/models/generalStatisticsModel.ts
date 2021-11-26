@@ -1,3 +1,5 @@
+//ზოგადი სტატისტიკური დატის მოდელი
+
 export class generalStatisticsModel {
     active: number;
     date: string;

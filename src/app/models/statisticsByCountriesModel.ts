@@ -1,3 +1,4 @@
+//ტატისტიკური ინფორმაციის მოდელი ქვეყნების მიხედვით 
 export class statisticsByCountriesModel {
     coordinates: {
         latitude: number;
