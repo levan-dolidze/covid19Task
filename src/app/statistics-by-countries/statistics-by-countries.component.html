@@ -5,8 +5,8 @@
         <mat-form-field appearance="fill">
             <mat-label>select country code </mat-label>
             <mat-select (selectionChange)="selectCountryCodes($event)" formControlName="countryCode">
-                <mat-option *ngFor='let countryCodes of sortedCountryList' [value]="countryCodes.code">
-                    {{countryCodes.name}}
+                <mat-option *ngFor='let countryList of sortedCountryList' [value]="countryList.code">
+                    {{countryList.name}}
                 </mat-option>
             </mat-select>
         </mat-form-field>

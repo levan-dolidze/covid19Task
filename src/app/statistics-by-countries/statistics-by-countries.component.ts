@@ -56,8 +56,8 @@ export class StatisticsByCountriesComponent implements OnInit, OnDestroy {
     });
   };
 
-
-  mapCountryCodes() {
+//ბრუნდება დასორტილი ქვეყნების ჩამონათვალი
+  sortCountrynames() {
 
 
     const sortedCountryNames = this.countries.sort((a: any, b: any) => {
@@ -76,7 +76,7 @@ export class StatisticsByCountriesComponent implements OnInit, OnDestroy {
 
   get sortedCountryList() {
 
-    return this.mapCountryCodes()
+    return this.sortCountrynames()
   }
 
   get returnStatisticInfo() {
